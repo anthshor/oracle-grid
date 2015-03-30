@@ -6,11 +6,14 @@ Automated build for an Oracle Grid and ASM
 
 Requires software directory with Oracle binaries already downloaded and contained within it:
 
+```
   $ cd software/
   $ ls -l
-
+```
 
 Run
 ---
-$ vagrant up
-$ vagrant ssh
+```
+  $ vagrant up
+  $ vagrant ssh
+```
