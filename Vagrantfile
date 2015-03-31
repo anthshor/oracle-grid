@@ -12,5 +12,5 @@ Vagrant.configure(2) do |config|
     vb.customize ['modifyhd', 'asmdisk2.vdi', '--type', 'shareable']
     vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 3, '--device', 0, '--type', 'hdd', '--medium', 'asmdisk2.vdi']
   end
-  #config.vm.provision "shell",  path: "provision.sh"
+  config.vm.provision "shell",  path: "provision.sh"
 end
