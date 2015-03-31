@@ -22,26 +22,34 @@ fi
 
 # Create the required directories
 
-useradd -u 54322 -g oinstall -G dba grid
-mkdir -p /u01/app/12.1.0/grid
-mkdir -p /u01/app/grid
-mkdir -p /u01/app/oracle
-chown -R grid:oinstall /u01
-chown oracle:oinstall /u01/app/oracle
-chmod -R 775 /u01/
+id grid
+if [ $? -ne 0 ]; then
+  useradd -u 54322 -g oinstall -G dba grid
+fi
+[ -d /u01/app/12.1.0/grid ] || mkdir -p /u01/app/12.1.0/grid
+[ -d /u01/app/12.1.0/grid ] || mkdir -p /u01/app/grid
+[ -d /u01/app/12.1.0/grid ] || mkdir -p /u01/app/oracle
+if [ `du -s /u01/app/ | cut -f 1` -gt 1000000 ]; then
+  echo "Seems something is installed, skipping permission change"
+else
+  chown -R grid:oinstall /u01
+  chown oracle:oinstall /u01/app/oracle
+  chmod -R 775 /u01/
+fi
+
 
 ORACLE_HOME=/u01/app/12.1.0/grid; export ORACLE_HOME
 
 echo grid | passwd grid --stdin
 
-su - grid -c 'echo "umask 022" >> .bash_profile' 
+su - grid -c '[ `grep "umask 022" .bash_profile | wc -l` -ne 0 ] || echo "umask 022" >> .bash_profile' 
 
 
 # echo deadline > /sys/block/${ASM_DISK}/queue/scheduler 
 
 # Unpack previously downloaded grid software
 
-if [ -d /home/grid/grid]; then
+if [ -d /home/grid/grid ]; then
     echo "Skipping unzipping..."
   else
     su - grid -c 'unzip /vagrant/software/linuxamd64_12102_grid_1of2.zip'
