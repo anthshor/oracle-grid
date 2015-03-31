@@ -43,8 +43,8 @@ su - grid -c 'echo "umask 022" >> .bash_profile'
 if [ -d /home/grid/grid]; then
     echo "Skipping unzipping..."
   else
-    su - grid -c 'unzip /vagrant/software/linuxamd64_12c_grid_1of2.zip'
-    su - grid -c 'unzip /vagrant/software/linuxamd64_12c_grid_2of2.zip'
+    su - grid -c 'unzip /vagrant/software/linuxamd64_12102_grid_1of2.zip'
+    su - grid -c 'unzip /vagrant/software/linuxamd64_12102_grid_2of2.zip'
 fi
 
 
