@@ -14,6 +14,7 @@ if [ $? -ne 0 ]; then
   yum -y install $PACKAGES  
 fi
 
+
 # Create Oracle Inventory directory
 
 [ -d /u01/app/oraInventory ] || mkdir -p /u01/app/oraInventory
@@ -46,6 +47,7 @@ if [ -d /home/grid/grid]; then
     su - grid -c 'unzip /vagrant/software/linuxamd64_12102_grid_1of2.zip'
     su - grid -c 'unzip /vagrant/software/linuxamd64_12102_grid_2of2.zip'
 fi
+
 
 
 # su - grid -c '/media/sf_12cR1/grid/runInstaller -silent -showProgress -promptForPassword -waitforcompletion -responseFile /vagrant/grid.rsp'
