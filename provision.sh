@@ -22,13 +22,13 @@ fi
 
 # Create the required directories
 
-id grid
+id grid 2> /dev/null
 if [ $? -ne 0 ]; then
   useradd -u 54322 -g oinstall -G dba grid
 fi
 [ -d /u01/app/12.1.0/grid ] || mkdir -p /u01/app/12.1.0/grid
-[ -d /u01/app/12.1.0/grid ] || mkdir -p /u01/app/grid
-[ -d /u01/app/12.1.0/grid ] || mkdir -p /u01/app/oracle
+[ -d /u01/app/grid ] || mkdir -p /u01/app/grid
+[ -d /u01/app/oracle ] || mkdir -p /u01/app/oracle
 if [ `du -s /u01/app/ | cut -f 1` -gt 1000000 ]; then
   echo "Seems something is installed, skipping permission change"
 else
@@ -55,10 +55,15 @@ if [ -d /home/grid/grid ]; then
     su - grid -c 'unzip /vagrant/software/linuxamd64_12102_grid_1of2.zip'
     su - grid -c 'unzip /vagrant/software/linuxamd64_12102_grid_2of2.zip'
 fi
+if [ $? -ne 0 ]; then
+  echo "Failed to unzip files. Permissions issue?"
+  exit
+fi
 
 # Create partition table and write it to disk
 
-fdisk /dev/sdc  << EOF
+for disk in sdc sdd ; do
+fdisk /dev/$disk  << EOF
 n
 p
 1
@@ -66,15 +71,11 @@ p
 
 w
 EOF
-
-fdisk /dev/sdd  << EOF
-n
-p
-1
-1
-
-w
-EOF
+done
+if [ $? -ne 0 ]; then
+  echo "Something went wrong with fdisk"
+  exit
+fi
 
 ###############
 
