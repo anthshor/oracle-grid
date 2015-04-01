@@ -3,6 +3,7 @@
 
 Vagrant.configure(2) do |config|
   config.vm.box = "kikitux/oracle65-4disk"
+  config.vm.network "private_network", ip: "192.168.33.11"
 # Thanks Alvaro https://github.com/racattack/vagrantfile/blob/master/OracleLinux/racattack12cR1/Vagrantfile
   config.vm.provider :virtualbox do |vb|
     vb.customize ['createhd', '--filename', 'asmdisk1', '--size', '5120', '--variant', 'fixed']
