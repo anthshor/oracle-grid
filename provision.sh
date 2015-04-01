@@ -20,11 +20,15 @@ fi
 [ -d /u01/app/oraInventory ] || mkdir -p /u01/app/oraInventory
 
 
-# Create the required directories
+# Create the required user, groups and directories
+
+[ `grep asmadmin /etc/group | wc -l` -ne 0 ] || groupadd -g 54328 asmadmin
+[ `grep asmoper /etc/group | wc -l` -ne 0 ] || groupadd -g 54329 asmoper
+[ `grep asmdba /etc/group | wc -l` -ne 0 ] || groupadd -g 54325 asmdba
 
 id grid 2> /dev/null
 if [ $? -ne 0 ]; then
-  useradd -u 54322 -g oinstall -G dba grid
+  useradd -u 54322 -g oinstall -G asmadmin,asmdba grid
 fi
 [ -d /u01/app/12.1.0/grid ] || mkdir -p /u01/app/12.1.0/grid
 [ -d /u01/app/grid ] || mkdir -p /u01/app/grid
@@ -108,6 +112,21 @@ done
 
 ###############
 
-# su - grid -c '/media/sf_12cR1/grid/runInstaller -silent -showProgress -promptForPassword -waitforcompletion -responseFile /vagrant/grid.rsp'
+# Add hostname to hosts file. 
+
+if [ `grep -i $hostname /etc/hosts | wc -l` -ne 0 ]; then
+    echo "Skipping modifying hosts file, hostname present"
+  else
+    long="`hostname`"
+    short="`hostname -s`"
+    echo "updating /etc/hosts with $HOSTNAME information"
+    if [ "$short" == "$long" ]; then
+      echo "127.0.0.1 localhost.localdomain localhost $short" > /etc/hosts
+    else
+      echo "127.0.0.1 localhost.localdomain localhost $long $short" > /etc/hosts
+    fi
+fi
+
+su - grid -c 'grid/runInstaller -silent -showProgress -promptForPassword -waitforcompletion -responseFile /vagrant/grid.rsp'
 
 
