@@ -154,13 +154,13 @@ oracle.install.asm.OSASM=asmadmin
 #-------------------------------------------------------------------------------
 # Specify a name for SCAN
 #-------------------------------------------------------------------------------
-oracle.install.crs.config.gpnp.scanName=scan_listener
+oracle.install.crs.config.gpnp.scanName=
 
 #-------------------------------------------------------------------------------
 # Specify a unused port number for SCAN service
 #-------------------------------------------------------------------------------
 
-oracle.install.crs.config.gpnp.scanPort=1521
+oracle.install.crs.config.gpnp.scanPort=
 
 ################################################################################
 #                                                                              #
@@ -171,7 +171,7 @@ oracle.install.crs.config.gpnp.scanPort=1521
 # Specify the type of cluster you would like to configure
 # Allowed values: FLEX and STANDARD
 #-------------------------------------------------------------------------------
-oracle.install.crs.config.ClusterType=
+oracle.install.crs.config.ClusterType=STANDARD
 
 
 #-------------------------------------------------------------------------------
@@ -187,7 +187,7 @@ oracle.install.crs.config.clusterName=
 # Specify 'true' if you would like to configure Grid Naming Service(GNS), else
 # specify 'false'
 #-------------------------------------------------------------------------------
-oracle.install.crs.config.gpnp.configureGNS=
+oracle.install.crs.config.gpnp.configureGNS=false
 
 #-------------------------------------------------------------------------------
 # Applicable only if you choose to configure GNS
@@ -307,7 +307,7 @@ oracle.install.crs.config.sharedFileSystemStorage.ocrRedundancy=
 # Specify 'true' if you would like to configure Intelligent Power Management interface
 # (IPMI), else specify 'false'
 #-------------------------------------------------------------------------------
-oracle.install.crs.config.useIPMI=
+oracle.install.crs.config.useIPMI=false
 
 #-------------------------------------------------------------------------------
 # Applicable only if you choose to configure IPMI
@@ -332,7 +332,7 @@ oracle.install.asm.SYSASMPassword=welcome1
 # Example: oracle.install.asm.diskGroup.name=data
 #
 #-------------------------------------------------------------------------------
-oracle.install.asm.diskGroup.name=data
+oracle.install.asm.diskGroup.name=DATA
 
 #-------------------------------------------------------------------------------
 # Redundancy level to be used by ASM.
@@ -405,7 +405,7 @@ oracle.install.asm.ClientDataFile=
 # Specify whether to ignore down nodes during upgrade operation.
 # Value should be 'true' to ignore down nodes otherwise specify 'false'
 #-------------------------------------------------------------------------------
-oracle.install.crs.config.ignoreDownNodes=
+oracle.install.crs.config.ignoreDownNodes=false
 ################################################################################
 #                                                                              #
 #                               MANAGEMENT OPTIONS                             #
@@ -430,7 +430,7 @@ oracle.install.config.omsHost=
 # Specify the OMS port to connect to Cloud Control.
 # Applicable only when oracle.install.config.managementOption=CLOUD_CONTROL
 #-------------------------------------------------------------------------------
-oracle.install.config.omsPort=
+oracle.install.config.omsPort=0
 
 #-------------------------------------------------------------------------------
 # Specify the EM Admin user name to use to connect to Cloud Control.
