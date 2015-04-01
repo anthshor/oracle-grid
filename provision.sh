@@ -28,7 +28,7 @@ fi
 
 id grid 2> /dev/null
 if [ $? -ne 0 ]; then
-  useradd -u 54322 -g oinstall -G asmadmin,asmdba grid
+  useradd -u 54322 -g oinstall -G asmadmin,asmdba,asmoper grid
 fi
 [ -d /u01/app/12.1.0/grid ] || mkdir -p /u01/app/12.1.0/grid
 [ -d /u01/app/grid ] || mkdir -p /u01/app/grid
@@ -127,6 +127,14 @@ if [ `grep -i $hostname /etc/hosts | wc -l` -ne 0 ]; then
     fi
 fi
 
+# Set hard and soft limits
+echo "grid 		soft    nofile          4096" >> /etc/security/limits.conf
+echo "grid		hard    nofile          65536" >> /etc/security/limits.conf
+su - grid -c 'ulimit -n 65536'
+
+#su - grid -c 'grid/runInstaller -silent -showProgress -promptForPassword -waitforcompletion -responseFile /vagrant/grid.rsp'
 su - grid -c 'grid/runInstaller -silent -showProgress -promptForPassword -waitforcompletion -responseFile /vagrant/grid.rsp'
 
-
+# Run root scripts
+su - root -c '/u01/app/oraInventory/orainstRoot.sh'
+su - root -c '/u01/app/12.1.0/grid/root.sh'
