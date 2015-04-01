@@ -56,7 +56,56 @@ if [ -d /home/grid/grid ]; then
     su - grid -c 'unzip /vagrant/software/linuxamd64_12102_grid_2of2.zip'
 fi
 
+# Create partition table and write it to disk
 
+fdisk /dev/sdc  << EOF
+n
+p
+1
+1
+
+w
+EOF
+
+fdisk /dev/sdd  << EOF
+n
+p
+1
+1
+
+w
+EOF
+
+###############
+
+# Thanks RAC Attack 
+#  - http://en.wikibooks.org/wiki/RAC_Attack_-_Oracle_Cluster_Database_at_Home/RAC_Attack_12c/Configure_Storage_Persistent_Naming
+
+# Configure the option -g for the scsi_id command to expect an UUID
+
+echo "options=-g" > /etc/scsi_id.config
+
+# Prepare the file /etc/udev/rules.d/99-oracle-asmdevices.rules
+
+i=1
+cmd="/sbin/scsi_id -g -u -d"
+for disk in sdc sdd ; do 
+         cat <<EOF >> /etc/udev/rules.d/99-oracle-asmdevices.rules
+KERNEL=="sd?1", BUS=="scsi", PROGRAM=="$cmd /dev/\$parent", \
+ RESULT=="`$cmd /dev/$disk`", NAME="asm-disk$i", OWNER="oracle", GROUP="dba", MODE="0660"
+EOF
+         i=$(($i+1)) 
+done
+
+# Reload the udev rules and restart udev:
+
+/sbin/partprobe /dev/sdc1 /dev/sdd1
+/sbin/udevadm test /block/sdc/sdc1
+/sbin/udevadm test /block/sdd/sdd1
+/sbin/udevadm control --reload-rules
+/sbin/start_udev
+
+###############
 
 # su - grid -c '/media/sf_12cR1/grid/runInstaller -silent -showProgress -promptForPassword -waitforcompletion -responseFile /vagrant/grid.rsp'
 
