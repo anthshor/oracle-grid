@@ -97,7 +97,7 @@ cmd="/sbin/scsi_id -g -u -d"
 for disk in sdc sdd ; do 
          cat <<EOF >> /etc/udev/rules.d/99-oracle-asmdevices.rules
 KERNEL=="sd?1", BUS=="scsi", PROGRAM=="$cmd /dev/\$parent", \
- RESULT=="`$cmd /dev/$disk`", NAME="asm-disk$i", OWNER="oracle", GROUP="dba", MODE="0660"
+ RESULT=="`$cmd /dev/$disk`", NAME="asm-disk$i", OWNER="grid", GROUP="asmdba", MODE="0660"
 EOF
          i=$(($i+1)) 
 done
